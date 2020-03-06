@@ -1,0 +1,56 @@
+---
+title: "Week 3 Assignment"
+author: "Simone"
+date: "March 6, 2020"
+output: ioslides_presentation
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 8, fig.height = 5)
+```
+
+## Dataset
+
+### Description
+**mtcars** (*Motor Trend Car Road Tests*)  
+The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+### Type of plot
+We are going to build an interactive **scatter3d** plot using the **plotly** library, with the variable **wt** (*Weight (1000 lbs)*) on the x-axis, the variable **qsec** (*1/4 mile time*) on the y-axis, and the variable **mpg** (*Miles/(US) gallon*) on the z-axis. Furthermore, the color of the markers is based on the variable **am** (*Transmission: 0 = automatic, 1 = manual*)
+
+## Code to create the plot (1)
+
+```{r plot_1, echo = TRUE}
+## Load the libraries
+library(plotly)
+library(datasets)
+data(mtcars)
+
+## Transform the variable am as a factor
+mtcars$am[mtcars$am == 0] <- 'Automatic'
+mtcars$am[mtcars$am == 1] <- 'Manual'
+mtcars$am <- as.factor(mtcars$am)
+```
+
+## Code to create the plot (2)
+
+```{r plot_2, echo = TRUE}
+## Build the plot
+p <- with(mtcars, plot_ly(x = wt, y = qsec, z = mpg,
+                          type = "scatter3d",
+                          mode = "markers",
+                          color = factor(am))) %>%
+  layout(autosize = T,
+         scene = list(xaxis = list(title = "Weight (1000 lbs)"),
+                      yaxis = list(title = "1/4 mile time"),
+                      zaxis = list(title = "Miles/(US) gallon"),
+                      camera = list(eye = list(x = 1.6,
+                                               y = 1.6,
+                                               z = 0.5))))
+```
+
+## Slide with Plot
+
+```{r plot_3}
+p
+```
